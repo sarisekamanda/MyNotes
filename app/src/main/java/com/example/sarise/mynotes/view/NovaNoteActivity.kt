@@ -139,7 +139,7 @@ class NovaNoteActivity: AppCompatActivity() {
         return super.onContextItemSelected(item)
     }
 
-    // ---- menu ----
+    // ---- MENU BUNITINHO ----
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_nova_nota, menu)
@@ -151,13 +151,13 @@ class NovaNoteActivity: AppCompatActivity() {
             true
         }
         else if (item?.itemId == R.id.menu_friend_save){
-            if(editText.text.isNullOrEmpty()) Toast.makeText(this,
-                "Insira o nome da pessoa",
+            if(txtTitulo.text.isNullOrEmpty()) Toast.makeText(this,
+                "Insira um Título",
                 Toast.LENGTH_LONG).show()
             else {
                 val note = Note(
-                    titulo = editText.toString(),
-                    conteudo = editText2.toString()
+                    titulo = txtTitulo.toString(),
+                    conteudo = txtConteudo.toString()
                 )
                 //criando uma intent para inserir os dados de resposta
                 val replyIntent = Intent()

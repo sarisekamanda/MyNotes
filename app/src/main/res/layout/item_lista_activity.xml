@@ -16,7 +16,7 @@
                 android:id="@+id/imgNoteIcon"
                 android:layout_width="64dp"
                 android:layout_height="64dp"
-                android:src="@drawable/noteIcon"
+                android:src="@drawable/noteicon"
                 app:civ_border_color="#FF000000"
                 app:civ_border_width="2dp"
                 android:layout_margin="8dp"/>
