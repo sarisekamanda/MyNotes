@@ -14,6 +14,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import com.example.sarise.mynotes.R
+import com.example.sarise.mynotes.db.Note
 import kotlinx.android.synthetic.main.activity_nova_note.*
 
 class NovaNoteActivity: AppCompatActivity() {
@@ -124,9 +125,9 @@ class NovaNoteActivity: AppCompatActivity() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_IMAGE_GARELLY) imgNewFriend.setImageURI(data?.data)
+        if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_IMAGE_GARELLY) imgNovaNote.setImageURI(data?.data)
 
-        if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_IMAGE_CAPTURE) imgNewFriend.setImageURI(image_uri)
+        if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_IMAGE_CAPTURE) imgNovaNote.setImageURI(image_uri)
 
     }
 
@@ -141,7 +142,7 @@ class NovaNoteActivity: AppCompatActivity() {
     // ---- menu ----
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_novo_amigo, menu)
+        menuInflater.inflate(R.menu.menu_nova_nota, menu)
         return true
     }
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
@@ -150,17 +151,18 @@ class NovaNoteActivity: AppCompatActivity() {
             true
         }
         else if (item?.itemId == R.id.menu_friend_save){
-            if(etNome.text.isNullOrEmpty()) Toast.makeText(this,
+            if(editText.text.isNullOrEmpty()) Toast.makeText(this,
                 "Insira o nome da pessoa",
                 Toast.LENGTH_LONG).show()
             else {
-                val friend = Friend(
-                    nome = etNome.text.toString()
+                val note = Note(
+                    titulo = editText.toString(),
+                    conteudo = editText2.toString()
                 )
                 //criando uma intent para inserir os dados de resposta
                 val replyIntent = Intent()
                 // inserindo na intent a chave (EXTRA_REPLY) e o valor (friend)
-                replyIntent.putExtra(EXTRA_REPLY, friend)
+                replyIntent.putExtra(EXTRA_REPLY, note)
                 // enviando os dados
                 setResult(Activity.RESULT_OK, replyIntent)
             }
