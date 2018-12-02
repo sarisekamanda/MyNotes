@@ -1,7 +1,8 @@
-package com.example.sarise.mynotes
+package com.example.sarise.mynotes.view
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import com.example.sarise.mynotes.R
 
 class ListaActivity : AppCompatActivity() {
 
