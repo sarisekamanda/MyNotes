@@ -15,7 +15,7 @@ import kotlinx.coroutines.experimental.launch
 abstract class NoteDatabase: RoomDatabase() {
 
 
-    abstract fun noteDao():NoteDao
+    abstract fun noteDAO():NoteDao
 
     companion object {
 
@@ -29,7 +29,7 @@ abstract class NoteDatabase: RoomDatabase() {
                     "note-database"
                 )
                     .fallbackToDestructiveMigration()
-                    .addCallback(FriendDatabaseCalback(scope))
+                    .addCallback(NoteDatabaseCalback(scope))
                     .build()
                 INSTANCE = instance
                 instance
@@ -45,7 +45,7 @@ abstract class NoteDatabase: RoomDatabase() {
             super.onOpen(db)
             INSTANCE?.let { database ->
                 scope.launch(Dispatchers.IO) {
-                    populaTabela(database.noteDao())
+                    populaTabela(database.noteDAO())
                 }
             }
         }

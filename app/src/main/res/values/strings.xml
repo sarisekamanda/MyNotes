@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">MyNotes</string>
+    <string name="titulo">Título</string>
+    <string name="conteudo">Start taking notes!</string>
+    <string name="notePhoto">Foto para anotação</string>
+    <string name="salvar">salvar</string>
 </resources>
