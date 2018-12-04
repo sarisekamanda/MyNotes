@@ -14,7 +14,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import com.example.sarise.mynotes.R
-import com.example.sarise.mynotes.db.Note
+import com.example.sarise.mynotes.model.Note
 import kotlinx.android.synthetic.main.activity_nova_note.*
 
 class NovaNoteActivity: AppCompatActivity() {
@@ -37,11 +37,9 @@ class NovaNoteActivity: AppCompatActivity() {
         // botão de voltar ativo no menu superior esquerdo
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        fabAddImagem?.setOnClickListener {
-            fabAddImagem.setOnCreateContextMenuListener { menu, v, menuInfo ->
-                menu.add(Menu.NONE, 1, Menu.NONE, "Escolher foto")
-                menu.add(Menu.NONE, 2, Menu.NONE, "Tirar foto")
-            }
+        fabAddImagem.setOnCreateContextMenuListener { menu, v, menuInfo ->
+            menu.add(Menu.NONE, 1, Menu.NONE, "Escolher foto")
+            menu.add(Menu.NONE, 2, Menu.NONE, "Tirar foto")
         }
     }
 
@@ -106,7 +104,7 @@ class NovaNoteActivity: AppCompatActivity() {
         }
         else{
             // system < M
-            //takePicture()
+            takePicture()
         }
     }
 
@@ -125,7 +123,10 @@ class NovaNoteActivity: AppCompatActivity() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_IMAGE_GARELLY) imgNovaNote.setImageURI(data?.data)
+        if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_IMAGE_GARELLY){
+            image_uri = data?.data
+            imgNovaNote.setImageURI(image_uri)
+        }
 
         if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_IMAGE_CAPTURE) imgNovaNote.setImageURI(image_uri)
 

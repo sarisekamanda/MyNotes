@@ -5,11 +5,16 @@ import android.arch.persistence.room.Database
 import android.arch.persistence.room.Room
 import android.arch.persistence.room.RoomDatabase
 import android.content.Context
+import com.example.sarise.mynotes.model.Note
 import kotlinx.coroutines.experimental.CoroutineScope
 import kotlinx.coroutines.experimental.Dispatchers
 import kotlinx.coroutines.experimental.IO
 import kotlinx.coroutines.experimental.launch
 
+/**
+ * This is the backend. The database. This used to be done by the OpenHelper.
+ * The fact that this has very few comments emphasizes its coolness.
+ */
 
 @Database(entities = [Note::class], version = 1)
 abstract class NoteDatabase: RoomDatabase() {
@@ -29,7 +34,7 @@ abstract class NoteDatabase: RoomDatabase() {
                     "note-database"
                 )
                     .fallbackToDestructiveMigration()
-                    .addCallback(NoteDatabaseCalback(scope))
+                    .addCallback(NoteDatabaseCallback(scope))
                     .build()
                 INSTANCE = instance
                 instance
@@ -37,7 +42,7 @@ abstract class NoteDatabase: RoomDatabase() {
         }
     }
 
-    private class NoteDatabaseCalback(
+    private class NoteDatabaseCallback(
         private val scope: CoroutineScope
     ): RoomDatabase.Callback(){
 
@@ -45,7 +50,7 @@ abstract class NoteDatabase: RoomDatabase() {
             super.onOpen(db)
             INSTANCE?.let { database ->
                 scope.launch(Dispatchers.IO) {
-                    populaTabela(database.noteDAO())
+                        populaTabela(database.noteDAO())
                 }
             }
         }

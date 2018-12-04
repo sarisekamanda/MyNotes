@@ -3,8 +3,7 @@ package com.example.sarise.mynotes.viewmodel
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.LiveData
-import com.example.sarise.mynotes.db.Note
-import com.example.sarise.mynotes.db.NoteDao
+import com.example.sarise.mynotes.model.Note
 import com.example.sarise.mynotes.db.NoteDatabase
 import com.example.sarise.mynotes.repository.NoteRepository
 import kotlinx.coroutines.experimental.*
