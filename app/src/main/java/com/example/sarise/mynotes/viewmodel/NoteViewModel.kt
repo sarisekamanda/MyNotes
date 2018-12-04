@@ -33,6 +33,14 @@ class NoteViewModel(application: Application) : AndroidViewModel(application){
             repository.insert(note)
         }
 
+        fun update(note: Note) = scope.launch(Dispatchers.IO){
+           repository.update(note)
+         }
+
+        fun delete(note: Note) = scope.launch(Dispatchers.IO){
+            repository.delete(note)
+        }
+
         override fun onCleared() {
             super.onCleared()
             parentJob.cancel()

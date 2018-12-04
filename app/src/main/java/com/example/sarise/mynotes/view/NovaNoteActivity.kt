@@ -27,6 +27,7 @@ class NovaNoteActivity: AppCompatActivity() {
         private val REQUEST_IMAGE_GARELLY = 1000
         private val REQUEST_IMAGE_CAPTURE = 2000
         const val EXTRA_REPLY = "view.REPLY"
+        const val EXTRA_DELETE = "view.Delete"
 
     }
 
@@ -152,13 +153,13 @@ class NovaNoteActivity: AppCompatActivity() {
             true
         }
         else if (item?.itemId == R.id.menu_friend_save){
-            if(txtTitulo.text.isNullOrEmpty()) Toast.makeText(this,
+            if(etTitulo.text.isNullOrEmpty()) Toast.makeText(this,
                 "Insira um Título",
                 Toast.LENGTH_LONG).show()
             else {
                 val note = Note(
-                    titulo = txtTitulo.toString(),
-                    conteudo = txtConteudo.toString()
+                    titulo = etTitulo.toString(),
+                    conteudo = etConteudo.toString()
                 )
                 //criando uma intent para inserir os dados de resposta
                 val replyIntent = Intent()
