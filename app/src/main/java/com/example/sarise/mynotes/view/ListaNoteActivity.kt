@@ -23,25 +23,25 @@ class ListaNoteActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_lista_note)
 
+        fabAddNote.setOnClickListener {
+            val intent = Intent(this@ListaNoteActivity, NovaNoteActivity::class.java)
+            // abre uma nova activity, mas espera um resultado que será validado com a chave
+            // que estou enviand - requestCodeAddAmigo
+            startActivityForResult(intent, requestCodeNote)
+        }
+
         val recyclerView = rvListaNotes
         val adapter = NoteRecyclerAdapter(this)
-        // novo 26.11.2018
-        /**
-         *  ao clicar no item da lista, ele acessará o onItemClick
-         *  que atribuirá o objeto do item da lista à intent
-         *  e abrirá a nova activity passando o objeto
-         *  e receberá um retorno quando a activity for fechada
-         */
+
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(this)
+
         adapter.onItemClick = {
             val intent = Intent(this@ListaNoteActivity,
                 NovaNoteActivity::class.java)
             intent.putExtra(NovaNoteActivity.EXTRA_REPLY, it)
             startActivityForResult(intent, requestCodeNote )
         }
-        // fim novo
-        recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        //recyclerView.layoutManager = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
 
         noteViewModel =
                 ViewModelProviders.of(this).
@@ -52,13 +52,9 @@ class ListaNoteActivity : AppCompatActivity() {
 
         })
 
-        fabAddNote.setOnClickListener {
-            val intent = Intent(this@ListaNoteActivity, NovaNoteActivity::class.java)
-            // abre uma nova activity, mas espera um resultado que será validado com a chave
-            // que estou enviand - requestCodeAddAmigo
-            startActivityForResult(intent, requestCodeNote)
-        }
+
     }
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int,
                                   data: Intent?) {

@@ -11,14 +11,8 @@ import kotlinx.coroutines.experimental.Dispatchers
 import kotlinx.coroutines.experimental.IO
 import kotlinx.coroutines.experimental.launch
 
-/**
- * This is the backend. The database. This used to be done by the OpenHelper.
- * The fact that this has very few comments emphasizes its coolness.
- */
-
 @Database(entities = [Note::class], version = 1)
 abstract class NoteDatabase: RoomDatabase() {
-
 
     abstract fun noteDAO():NoteDao
 
@@ -26,6 +20,7 @@ abstract class NoteDatabase: RoomDatabase() {
 
         @Volatile
         private var INSTANCE: NoteDatabase? = null
+
         fun getDatabase(context: Context, scope: CoroutineScope):NoteDatabase{
             return INSTANCE ?: synchronized(this){
                 val instance = Room.databaseBuilder(
@@ -34,7 +29,7 @@ abstract class NoteDatabase: RoomDatabase() {
                     "note-database"
                 )
                     .fallbackToDestructiveMigration()
-                    .addCallback(NoteDatabaseCallback(scope))
+                  //  .addCallback(NoteDatabaseCallback(scope))
                     .build()
                 INSTANCE = instance
                 instance
@@ -42,7 +37,7 @@ abstract class NoteDatabase: RoomDatabase() {
         }
     }
 
-    private class NoteDatabaseCallback(
+   /* private class NoteDatabaseCallback(
         private val scope: CoroutineScope
     ): RoomDatabase.Callback(){
 
@@ -57,6 +52,6 @@ abstract class NoteDatabase: RoomDatabase() {
 
         fun populaTabela(noteDao: NoteDao){
          }
-}
+}*/
 
 }

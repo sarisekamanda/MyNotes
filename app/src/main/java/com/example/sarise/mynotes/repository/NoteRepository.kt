@@ -23,4 +23,8 @@ class NoteRepository (private val noteDao: NoteDao) {
         noteDao.update(note)
     }
 
+    fun list(): LiveData<List<Note>> {
+        return noteDao.allNotes()
+    }
+
 }

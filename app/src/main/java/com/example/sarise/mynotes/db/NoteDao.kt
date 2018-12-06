@@ -11,11 +11,14 @@ interface NoteDao {
     @Insert
     fun insert(note: Note)
 
-    @Query("DELETE FROM note_table")
-    fun deleteAll()
+    @Update
+    fun update (note: Note)
 
     @Delete
     fun delete(note: Note)
+
+    @Query("DELETE FROM note_table")
+    fun deleteAll()
 
     @Query("SELECT * from note_table ORDER BY titulo ASC")
     fun getAll(): LiveData<List<Note>>
@@ -23,6 +26,7 @@ interface NoteDao {
     @Query("SELECT * from note_table WHERE id = :id")
     fun getNote (id: Long): LiveData<Note>
 
-    @Update
-    fun update (note: Note)
+    @Query("SELECT * FROM note_table")
+    fun allNotes():LiveData<List<Note>>
+
 }

@@ -13,46 +13,45 @@ import kotlinx.android.synthetic.main.item_lista_activity.view.*
 
 class NoteRecyclerAdapter internal constructor(context: Context) :
 RecyclerView.Adapter<NoteRecyclerAdapter.ViewHolder>(){
+
     var onItemClick: ((Note) -> Unit)? = null
     private val inflater: LayoutInflater = LayoutInflater.from(context)
     private var notes  = emptyList<Note>() // Cached copy of friends
     //  private val mContext = context
 
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val photoNote: CircleImageView = itemView.imgNoteIcon
-        val note: TextView = itemView.txtNoteTitulo
+    // infla o layout do item da lista para cada componente da lista
+    override fun onCreateViewHolder(holder: ViewGroup, position: Int): ViewHolder {
+        val view = inflater.inflate(R.layout.item_lista_activity , holder,
+            false )
+        return ViewHolder(view)
+    }
+
+    // retorna o tamanho da lista
+    override fun getItemCount() = notes.size
+
+    // colocando os itens da lista nos itens de view da lista
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val current = notes[position]
+        holder.tituloNota.text = current.titulo
+    }
+
+    // classe para mapear os componentes do item da lista
+    inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
+        val tituloNota: TextView = itemView.txtNoteTitulo
 
         init {
             itemView.setOnClickListener {
                 onItemClick?.invoke(notes[adapterPosition])
             }
         }
-    }
-
-    override fun onCreateViewHolder(holder: ViewGroup, position: Int): ViewHolder {
-        val view = inflater.inflate(R.layout.item_lista_activity, holder, false)
-        return ViewHolder(view)
-    }
-
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val current = notes[position]
-        holder.note.text = current.titulo
-        // it.photoFriend.text = friend.fSrcPhoto
-
-        /* holder.itemView.setOnClickListener {v->
-             val intent = Intent(v.context, NewFriendActivity::class.java)
-             intent.putExtra("goFriend", current)
-             v.context.startActivity(intent)
-         }
-         */
 
     }
 
-    override fun getItemCount() = notes.size
 
-    fun setNoteList(noteList: List<Note>){
-        this.notes = noteList
+    fun setNoteList(friendList: List<Note>){
+        this.notes = friendList
         notifyDataSetChanged()
     }
+
 
 }

@@ -2,9 +2,13 @@ package com.example.sarise.mynotes.view
 
 import android.Manifest
 import android.app.Activity
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.ContentValues
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -22,6 +26,12 @@ class NovaNoteActivity: AppCompatActivity() {
     private var image_uri : Uri? = null
     private var mCurrentPhotoPath: String = ""
 
+    lateinit var note: Note
+
+    private val channelId = "com.example.sarise.mynotes"
+    private var notificationManager: NotificationManager? = null
+
+
     companion object {
         // image pick code
         private val REQUEST_IMAGE_GARELLY = 1000
@@ -35,12 +45,30 @@ class NovaNoteActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_nova_note)
 
+        // instanciando o objeto da notificação
+        notificationManager =
+                getSystemService(Context.NOTIFICATION_SERVICE)
+                        as NotificationManager
+
         // botão de voltar ativo no menu superior esquerdo
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         fabAddImagem.setOnCreateContextMenuListener { menu, v, menuInfo ->
             menu.add(Menu.NONE, 1, Menu.NONE, "Escolher foto")
             menu.add(Menu.NONE, 2, Menu.NONE, "Tirar foto")
+        }
+
+        val intent:Intent = intent
+        try {
+            // receber o objeto da intent
+            note = intent.getSerializableExtra(EXTRA_REPLY) as Note
+            // para cada item do formulário, adiciono o valor do atributo do objeto
+            note.let {
+                etTitulo.setText(note.titulo)
+                etConteudo.setText(note.conteudo)
+            }
+        } catch (e: Exception){
+
         }
     }
 
@@ -145,6 +173,17 @@ class NovaNoteActivity: AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_nova_nota, menu)
+        try {
+            note.let {
+                // torna o botão do item do menu visivel
+                val menuItem = menu?.findItem(R.id.menu_note_delete)
+                menuItem?.isVisible = true
+            }
+        } catch (e:Exception){
+            // torna o botão do item do menu invisivel
+            val menuItem = menu?.findItem(R.id.menu_note_delete)
+            menuItem?.isVisible = false
+        }
         return true
     }
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
@@ -157,10 +196,20 @@ class NovaNoteActivity: AppCompatActivity() {
                 "Insira um Título",
                 Toast.LENGTH_LONG).show()
             else {
-                val note = Note(
-                    titulo = etTitulo.toString(),
-                    conteudo = etConteudo.toString()
-                )
+
+                if ((::note.isInitialized) && (note.id > 0)) {
+                  note.titulo = etTitulo.text.toString()
+                    note.conteudo = etConteudo.text.toString()
+
+                    // adicionando a notificação
+                    noticacao(channelId, note.titulo, "Nota alterado")
+                } else {
+                    val note = Note(
+                        titulo = etTitulo.toString(),
+                        conteudo = etConteudo.toString()
+                    )// adicionando a notificação
+                    noticacao(channelId, note.titulo, "Nova nota")
+                }
                 //criando uma intent para inserir os dados de resposta
                 val replyIntent = Intent()
                 // inserindo na intent a chave (EXTRA_REPLY) e o valor (friend)
@@ -173,6 +222,23 @@ class NovaNoteActivity: AppCompatActivity() {
         }
         else{
             super.onOptionsItemSelected(item)
+        }
+    }
+
+    fun noticacao(id: String, nome: String, descricao: String){
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+
+            val importance = NotificationManager.IMPORTANCE_DEFAULT
+
+            val channel = NotificationChannel(id, nome, importance)
+            channel.description = descricao
+            channel.enableLights(true)
+            channel.lightColor = Color.BLUE
+            channel.enableVibration(true)
+            channel.vibrationPattern =
+                    longArrayOf(100, 200, 300, 400, 500, 400, 300, 200, 400)
+
+            notificationManager?.createNotificationChannel(channel)
         }
     }
 
