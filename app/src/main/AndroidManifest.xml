@@ -16,8 +16,10 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".view.NoteActivity">
+
+        <activity android:name=".view.NovaNoteActivity">
         </activity>
+
     </application>
 
 </manifest>

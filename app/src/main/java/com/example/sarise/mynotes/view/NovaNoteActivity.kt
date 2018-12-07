@@ -26,6 +26,7 @@ class NovaNoteActivity: AppCompatActivity() {
     private var image_uri : Uri? = null
     private var mCurrentPhotoPath: String = ""
 
+//      var note: Note? = null
     lateinit var note: Note
 
     private val channelId = "com.example.sarise.mynotes"
@@ -169,7 +170,7 @@ class NovaNoteActivity: AppCompatActivity() {
         return super.onContextItemSelected(item)
     }
 
-    // ---- MENU BUNITINHO ----
+    // ---- MENU ----
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_nova_nota, menu)
@@ -186,12 +187,13 @@ class NovaNoteActivity: AppCompatActivity() {
         }
         return true
     }
+
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         return if (item?.itemId == android.R.id.home) {
             finish()
             true
         }
-        else if (item?.itemId == R.id.menu_friend_save){
+        else if (item?.itemId == R.id.menu_note_save){
             if(etTitulo.text.isNullOrEmpty()) Toast.makeText(this,
                 "Insira um Título",
                 Toast.LENGTH_LONG).show()
@@ -201,20 +203,18 @@ class NovaNoteActivity: AppCompatActivity() {
                   note.titulo = etTitulo.text.toString()
                     note.conteudo = etConteudo.text.toString()
 
-                    // adicionando a notificação
                     noticacao(channelId, note.titulo, "Nota alterado")
                 } else {
                     val note = Note(
                         titulo = etTitulo.toString(),
                         conteudo = etConteudo.toString()
-                    )// adicionando a notificação
+                    )
+
                     noticacao(channelId, note.titulo, "Nova nota")
                 }
-                //criando uma intent para inserir os dados de resposta
+
                 val replyIntent = Intent()
-                // inserindo na intent a chave (EXTRA_REPLY) e o valor (friend)
                 replyIntent.putExtra(EXTRA_REPLY, note)
-                // enviando os dados
                 setResult(Activity.RESULT_OK, replyIntent)
             }
             finish()

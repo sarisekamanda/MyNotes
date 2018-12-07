@@ -28,6 +28,7 @@ class ListaNoteActivity : AppCompatActivity() {
             // abre uma nova activity, mas espera um resultado que será validado com a chave
             // que estou enviand - requestCodeAddAmigo
             startActivityForResult(intent, requestCodeNote)
+            //startActivity(intent)
         }
 
         val recyclerView = rvListaNotes
